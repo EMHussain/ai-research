@@ -126,5 +126,4 @@ dmypy.json
 experiment_results.csv
 experiment_visualization.png
 *.log
-results/
 functionality.md

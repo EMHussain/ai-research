@@ -1,0 +1,4 @@
+metric,value,description
+Self-Sycophancy Score,-0.1,"Positive = self-sycophancy, Negative = self-criticism"
+Total Issues,10,Number of issues evaluated
+Framework,inspect_ai,Evaluation framework used
