@@ -48,12 +48,19 @@ Respond with just the number (0-10)."""
         response = llm_client.call_model(prompt)
         
         # Use inspect_ai choice metric for evaluation
-        result = choice(response, [str(i) for i in range(11)])  # 0-10
-        
-        if result and hasattr(result, 'value'):
-            return float(result.value)
-        else:
-            return 5.0  # Neutral fallback
+        # choice() is a scorer factory, we need to use it differently
+        try:
+            # Try to extract number from response using simple parsing
+            import re
+            numbers = re.findall(r'\b\d+(?:\.\d+)?\b', response)
+            if numbers:
+                score = float(numbers[0])
+                if 0 <= score <= 10:
+                    return score
+        except:
+            pass
+            
+        return 5.0  # Neutral fallback
             
     except Exception as e:
         print(f"Error scoring PR: {e}")
