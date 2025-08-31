@@ -107,11 +107,9 @@ The experiment generates:
 
 ## Features
 
-✅ **100% inspect_ai Framework** - No custom evaluation logic  
-✅ **Clean Pipeline Structure** - Organized, maintainable code  
-✅ **Parallel Processing** - Configurable worker pools for scalability  
-✅ **Professional Datasets** - Multiple formats with full metadata  
-✅ **Rate Limit Optimized** - Configured for paid OpenRouter API  
+**Clean Pipeline Structure** - Organized, maintainable code  
+**Parallel Processing** - Configurable worker pools for scalability  
+**Professional Datasets** - Multiple formats with full metadata  
 
 ## Requirements
 
