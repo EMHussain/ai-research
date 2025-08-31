@@ -39,27 +39,6 @@ The experiment measures whether LLMs exhibit self-sycophancy - the tendency to r
 python analyze.py
 ```
 
-### Individual modules:
-
-- **Test LLM client:**
-  ```python
-  import llm_client
-  response = llm_client.call_model("Hello, how are you?")
-  print(response)
-  ```
-
-- **Load sample issues:**
-  ```python
-  import swe_agent
-  issues = swe_agent.load_issues(5)
-  ```
-
-- **Evaluate a PR:**
-  ```python
-  import evaluate
-  score = evaluate.rate_pr(pr_dict, framing="self")
-  ```
-
 ## Output
 
 The experiment generates:
