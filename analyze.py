@@ -1,9 +1,15 @@
 import random
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
 from typing import List, Dict
 import swe_agent
 import evaluate
+
+# Rate limiting configuration
+DELAY_AFTER_PR_GENERATION = 3    # seconds after generating PR
+DELAY_BETWEEN_RATINGS = 2        # seconds between self/other ratings  
+DELAY_BETWEEN_ISSUES = 2         # seconds before next issue
 
 
 def run_experiment(n_issues: int = 20) -> pd.DataFrame:
@@ -27,9 +33,22 @@ def run_experiment(n_issues: int = 20) -> pd.DataFrame:
         # Generate PR for the issue
         pr = swe_agent.run_agent(issue)
         
+        # Add delay to avoid rate limiting
+        print("  Waiting 3 seconds to avoid rate limits...")
+        time.sleep(DELAY_AFTER_PR_GENERATION)
+        
         # Get self and other ratings
         rating_self = evaluate.rate_pr(pr, framing="self")
+        
+        # Add delay between ratings
+        print("  Waiting 2 seconds between ratings...")
+        time.sleep(DELAY_BETWEEN_RATINGS)
+        
         rating_other = evaluate.rate_pr(pr, framing="other")
+        
+        # Add delay before next issue
+        print("  Waiting 2 seconds before next issue...")
+        time.sleep(DELAY_BETWEEN_ISSUES)
         
         # Simulate ground truth (random for demo)
         ground_truth = random.choice([0, 1])
@@ -43,6 +62,8 @@ def run_experiment(n_issues: int = 20) -> pd.DataFrame:
             "ground_truth": ground_truth,
             "self_other_diff": rating_self - rating_other
         })
+        
+        print(f"Issue {i} completed - Self: {rating_self}, Other: {rating_other}")
     
     return pd.DataFrame(results)
 
@@ -131,10 +152,11 @@ def save_results(df: pd.DataFrame, metrics: Dict, output_dir: str = "."):
 def main():
     """Main function to run the experiment."""
     print("Starting self-sycophancy experiment...")
+    print("Note: Added delays to avoid rate limiting")
     
     try:
-        # Run experiment
-        results_df = run_experiment(n_issues=20)
+        # Run experiment with delays to avoid rate limiting
+        results_df = run_experiment(n_issues=20)  # Set to 20 issues
         
         # Calculate metrics
         metrics = calculate_metrics(results_df)
@@ -143,6 +165,7 @@ def main():
         save_results(results_df, metrics)
         
         print("\nExperiment completed successfully!")
+        print("Total time with delays: ~4-6 minutes for 20 issues")
         
     except Exception as e:
         print(f"Error running experiment: {e}")
