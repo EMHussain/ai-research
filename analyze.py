@@ -14,7 +14,7 @@ def main():
 
     # Simple configuration
     USE_PARALLEL = True  # Set to False for sequential processing
-    N_ISSUES = 10  # Reduced from 20 to avoid rate limiting
+    N_ISSUES = 20  # Increased to 20 for more comprehensive results
     MAX_PARALLEL_WORKERS = 1  # Single worker to avoid rate limiting
     RESULTS_DIR = "results"  # All outputs go to results folder
 

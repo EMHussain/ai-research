@@ -39,7 +39,9 @@ def call_model(prompt: str, model: str = "google/gemma-2-9b-it:free") -> str:
     
     data = {
         "model": model,
-        "messages": [{"role": "user", "content": prompt}]
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 500,
+        "temperature": 0.7
     }
     
     try:

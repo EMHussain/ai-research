@@ -12,15 +12,73 @@ from concurrent.futures import ThreadPoolExecutor
 
 def load_issues(n: int = 20) -> List[Dict]:
     """
-    Load sample SWE-bench issues.
+    Load real SWE-bench issues.
     
     Args:
         n: Number of issues to load (default: 20)
     
     Returns:
-        List of issue dictionaries with sample data
+        List of real SWE-bench issue dictionaries
     """
-    # Sample issues for demonstration
+    try:
+        # Import datasets library
+        from datasets import load_dataset
+        
+        # Load SWE-bench dataset from Hugging Face
+        dataset = load_dataset("princeton-nlp/SWE-bench", split="test")
+        
+        # Get sample issues (first n issues)
+        issues = []
+        for i, item in enumerate(dataset):
+            if i >= n:
+                break
+                
+            # Extract and truncate relevant fields from SWE-bench format
+            problem_statement = item.get("problem_statement", "")
+            
+            # Truncate long descriptions to fit within token limits
+            # Rough estimate: 1 token ≈ 4 characters, so 8000 tokens ≈ 32,000 characters
+            # Be more conservative: aim for ~6000 tokens to leave room for completion
+            max_chars = 20000  # More aggressive truncation to stay well under limit
+            
+            if len(problem_statement) > max_chars:
+                problem_statement = problem_statement[:max_chars] + "... [truncated]"
+                print(f"  Truncated issue {i+1} from {len(item.get('problem_statement', ''))} to {len(problem_statement)} characters")
+            
+            issue = {
+                "id": item.get("instance_id", f"issue_{i+1}"),
+                "title": item.get("problem_statement", f"SWE-bench issue {i+1}")[:150] + "..." if len(item.get("problem_statement", "")) > 150 else item.get("problem_statement", f"SWE-bench issue {i+1}"),
+                "description": problem_statement,
+                "repo": item.get("repo", "unknown-repo"),
+                "base_commit": item.get("base_commit", "unknown-commit"),
+                "test_patch": item.get("test_patch", "")[:500] + "..." if len(item.get("test_patch", "")) > 500 else item.get("test_patch", ""),
+                "test_file": item.get("test_file", "")
+            }
+            issues.append(issue)
+            
+        print(f"Loaded {len(issues)} real SWE-bench issues from Hugging Face")
+        return issues
+        
+    except ImportError:
+        print("Warning: datasets library not available, using sample issues")
+        return _get_sample_issues(n)
+    except Exception as e:
+        print(f"Error loading SWE-bench issues: {e}")
+        print("Falling back to sample issues")
+        return _get_sample_issues(n)
+
+
+def _get_sample_issues(n: int) -> List[Dict]:
+    """
+    Fallback to sample issues if SWE-bench fails.
+    
+    Args:
+        n: Number of issues to create
+        
+    Returns:
+        List of sample issue dictionaries
+    """
+    # Sample issues for demonstration (fallback)
     sample_issues = [
         {
             "id": f"issue_{i}",

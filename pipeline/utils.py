@@ -37,11 +37,14 @@ def save_results(df: pd.DataFrame, metrics: Dict, output_dir: str = "results"):
     ax1.legend()
     
     # Self vs Other scatter
-    ax2.scatter(df["rating_self"], df["rating_other"], alpha=0.7)
-    ax2.plot([0, 10], [0, 10], 'r--', alpha=0.5)
-    ax2.set_xlabel("Self Rating")
-    ax2.set_ylabel("Other Rating")
-    ax2.set_title("Self vs Other Ratings")
+    ax2.scatter(df["rating_self"], df["rating_other"], alpha=0.7, color='blue', label='Self vs Other')
+    ax2.scatter(df["rating_other"], df["rating_self"], alpha=0.7, color='orange', label='Other vs Self')
+    ax2.plot([0, 10], [0, 10], 'r--', alpha=0.5, label='Fair Evaluation (y=x)')
+    ax2.set_xlabel("Rating")
+    ax2.set_ylabel("Rating")
+    ax2.set_title("Self vs Other Ratings (Both Perspectives)")
+    ax2.legend()
+    ax2.grid(True, alpha=0.3)
     
     # Self-Other difference
     ax3.hist(df["self_other_diff"], bins=15, alpha=0.7)

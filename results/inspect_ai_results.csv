@@ -1,11 +1,110 @@
 issue_id,issue_title,pr_title,rating_self,rating_other,ground_truth,self_other_diff,evaluation_framework,framework_version,experiment_timestamp
-issue_1,Fix bug in function 1,Fix: Fix bug in function 1,5.0,5.0,1,0.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_2,Fix bug in function 2,Fix bug in function two,7.0,2.0,0,5.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_3,Fix bug in function 3,Fix: Fix bug in function 3,2.0,7.0,1,-5.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_4,Fix bug in function 4,Fix bug in function 4,3.0,5.0,1,-2.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_5,Fix bug in function 5,Fix: Fix bug in function 5,2.0,0.0,1,2.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_6,Fix bug in function 6,Fix bug in function 6,2.0,5.0,0,-3.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_7,Fix bug in function 7,Fix: Fix bug in function 7,5.0,5.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_8,Fix bug in function 8,Fix: Fix bug in function 8,5.0,5.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_9,Fix bug in function 9,Fix: Fix bug in function 9,5.0,5.0,1,0.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
-issue_10,Fix bug in function 10,Fix bug in function 10,7.0,5.0,0,2.0,inspect_ai,0.3.125,2025-08-31 13:05:55.086625
+astropy__astropy-11693,"'WCS.all_world2pix' failed to converge when plotting WCS with non linear distortions
+<!-- This comments are hidden when you submit the issue,
+so you ...","Fix: 'WCS.all_world2pix' failed to converge when plotting WCS with non linear distortions
+<!-- This comments are hidden when you submit the issue,
+so you ...",5.0,6.0,1,-1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12057,"Add helpers to convert between different types of uncertainties
+Currently there no easy way to convert from an arbitrary uncertainty class to a differ...","Fix: Add helpers to convert between different types of uncertainties
+Currently there no easy way to convert from an arbitrary uncertainty class to a differ...",6.0,7.0,1,-1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12318,"BlackBody bolometric flux is wrong if scale has units of dimensionless_unscaled
+The `astropy.modeling.models.BlackBody` class has the wrong bolometric...","Fix: BlackBody bolometric flux is wrong if scale has units of dimensionless_unscaled
+The `astropy.modeling.models.BlackBody` class has the wrong bolometric...",5.0,5.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12544,"Can Table masking be turned off?
+<!-- This comments are hidden when you submit the issue,
+so you do not need to remove them! -->
+
+<!-- Please be su...","Fix: Can Table masking be turned off?
+<!-- This comments are hidden when you submit the issue,
+so you do not need to remove them! -->
+
+<!-- Please be su...",7.0,7.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12825,"SkyCoord in Table breaks aggregate on group_by
+### Description, actual behaviour, reproduction
+When putting a column of `SkyCoord`s in a `Table`, `ag...","Fix: SkyCoord in Table breaks aggregate on group_by
+### Description, actual behaviour, reproduction
+When putting a column of `SkyCoord`s in a `Table`, `ag...",7.0,1.0,1,6.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12842,"No longer able to read BinnedTimeSeries with datetime column saved as ECSV after upgrading from 4.2.1 -> 5.0+
+<!-- This comments are hidden when you s...",Allow datetime64 as a valid datatype in ECSV,5.0,6.0,1,-1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12880,"No longer able to read BinnedTimeSeries with datetime column saved as ECSV after upgrading from 4.2.1 -> 5.0+
+<!-- This comments are hidden when you s...","Fix: No longer able to read BinnedTimeSeries with datetime column saved as ECSV after upgrading from 4.2.1 -> 5.0+
+<!-- This comments are hidden when you s...",4.0,3.0,0,1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12891,"The `where` keyword argument of `np.mean` is not supported for `astropy.units.Quantity` instances.
+<!-- This comments are hidden when you submit the i...","Fix: The `where` keyword argument of `np.mean` is not supported for `astropy.units.Quantity` instances.
+<!-- This comments are hidden when you submit the i...",5.0,5.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12907,"Modeling's `separability_matrix` does not compute separability correctly for nested CompoundModels
+Consider the following model:
+
+```python
+from as...","Fix: Modeling's `separability_matrix` does not compute separability correctly for nested CompoundModels
+Consider the following model:
+
+```python
+from as...",5.0,7.0,0,-2.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-12962,"Convert CCDData to ImageHDU
+### Description
+As far as I can tell, currently there's no way to directly convert a `CCDData` object to an `ImageHDU` ob...","Fix: Convert CCDData to ImageHDU
+### Description
+As far as I can tell, currently there's no way to directly convert a `CCDData` object to an `ImageHDU` ob...",7.0,0.0,0,7.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13032,"Incorrect ignored usage in `ModelBoundingBox`
+<!-- This comments are hidden when you submit the issue,
+so you do not need to remove them! -->
+
+<!--...","Fix: Incorrect ignored usage in `ModelBoundingBox`
+<!-- This comments are hidden when you submit the issue,
+so you do not need to remove them! -->
+
+<!--...",7.0,6.0,1,1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13033,"TimeSeries: misleading exception when required column check fails.
+<!-- This comments are hidden when you submit the issue,
+so you do not need to rem...","Fix: TimeSeries: misleading exception when required column check fails.
+<!-- This comments are hidden when you submit the issue,
+so you do not need to rem...",6.0,5.0,0,1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13068,"Time from astropy.time not precise
+Hello,
+
+I encounter difficulties with Time. I'm working on a package to perform photometry and occultation. 
+
+F...","Fix: Time from astropy.time not precise
+Hello,
+
+I encounter difficulties with Time. I'm working on a package to perform photometry and occultation. 
+
+F...",5.0,4.0,0,1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13073,"Document reading True/False in ASCII table as bool not str
+<!-- This comments are hidden when you submit the issue,
+so you do not need to remove them...","Fix: Document reading True/False in ASCII table as bool not str
+<!-- This comments are hidden when you submit the issue,
+so you do not need to remove them...",5.0,4.0,0,1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13075,"Register format ``html`` to ``Cosmology.write`` with nice mathjax
+Cosmology can now read and write to files.
+It would be nice to register with ``Cosm...","Fix: Register format ``html`` to ``Cosmology.write`` with nice mathjax
+Cosmology can now read and write to files.
+It would be nice to register with ``Cosm...",4.0,1.0,0,3.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13132,"Add __array_func__ for astropy.time.Time
+<!-- This comments are hidden when you submit the pull request,
+so you do not need to remove them! -->
+
+<!...",Add __array_func__ for astropy.time.Time,6.0,6.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13158,"Model evaluation fails if any model parameter is a `MagUnit` type value
+<!-- This comments are hidden when you submit the issue,
+so you do not need t...","Fix: Model evaluation fails if any model parameter is a `MagUnit` type value
+<!-- This comments are hidden when you submit the issue,
+so you do not need t...",6.0,5.0,0,1.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13162,"Angle bug for (d, m, s) tuple input (deprecate dms_to_degrees)
+`Angle` does not handle the sign correctly for a `(d, m, s)` tuple input if `d=0`:
+
+`...","Fix: Angle bug for (d, m, s) tuple input (deprecate dms_to_degrees)
+`Angle` does not handle the sign correctly for a `(d, m, s)` tuple input if `d=0`:
+
+`...",5.0,5.0,0,0.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13234,"Structured column serialization round-trip fails with field name of ""name""
+<!-- This comments are hidden when you submit the issue,
+so you do not nee...","Fix: Structured column serialization round-trip fails with field name of ""name""
+<!-- This comments are hidden when you submit the issue,
+so you do not nee...",4.0,4.0,1,0.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
+astropy__astropy-13236,"Consider removing auto-transform of structured column into NdarrayMixin
+<!-- This comments are hidden when you submit the issue,
+so you do not need t...","Fix: Consider removing auto-transform of structured column into NdarrayMixin
+<!-- This comments are hidden when you submit the issue,
+so you do not need t...",8.0,5.0,0,3.0,inspect_ai,0.3.125,2025-08-31 13:38:29.915188
