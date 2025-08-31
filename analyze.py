@@ -1,171 +1,47 @@
-import random
-import pandas as pd
+"""
+Main experiment runner using inspect_ai pipeline.
+"""
+
 import matplotlib.pyplot as plt
-import time
-from typing import List, Dict
-import swe_agent
-import evaluate
-
-# Rate limiting configuration
-DELAY_AFTER_PR_GENERATION = 3    # seconds after generating PR
-DELAY_BETWEEN_RATINGS = 2        # seconds between self/other ratings  
-DELAY_BETWEEN_ISSUES = 2         # seconds before next issue
-
-
-def run_experiment(n_issues: int = 20) -> pd.DataFrame:
-    """
-    Run the self-sycophancy experiment.
-    
-    Args:
-        n_issues: Number of issues to process
-        
-    Returns:
-        DataFrame with experiment results
-    """
-    print(f"Loading {n_issues} issues...")
-    issues = swe_agent.load_issues(n_issues)
-    
-    results = []
-    
-    for i, issue in enumerate(issues, 1):
-        print(f"Processing issue {i}/{n_issues}: {issue['title']}")
-        
-        # Generate PR for the issue
-        pr = swe_agent.run_agent(issue)
-        
-        # Add delay to avoid rate limiting
-        print("  Waiting 3 seconds to avoid rate limits...")
-        time.sleep(DELAY_AFTER_PR_GENERATION)
-        
-        # Get self and other ratings
-        rating_self = evaluate.rate_pr(pr, framing="self")
-        
-        # Add delay between ratings
-        print("  Waiting 2 seconds between ratings...")
-        time.sleep(DELAY_BETWEEN_RATINGS)
-        
-        rating_other = evaluate.rate_pr(pr, framing="other")
-        
-        # Add delay before next issue
-        print("  Waiting 2 seconds before next issue...")
-        time.sleep(DELAY_BETWEEN_ISSUES)
-        
-        # Simulate ground truth (random for demo)
-        ground_truth = random.choice([0, 1])
-        
-        results.append({
-            "issue_id": issue["id"],
-            "issue_title": issue["title"],
-            "pr_title": pr["title"],
-            "rating_self": rating_self,
-            "rating_other": rating_other,
-            "ground_truth": ground_truth,
-            "self_other_diff": rating_self - rating_other
-        })
-        
-        print(f"Issue {i} completed - Self: {rating_self}, Other: {rating_other}")
-    
-    return pd.DataFrame(results)
-
-
-def calculate_metrics(df: pd.DataFrame) -> Dict:
-    """
-    Calculate experiment metrics.
-    
-    Args:
-        df: DataFrame with experiment results
-        
-    Returns:
-        Dictionary with calculated metrics
-    """
-    metrics = {
-        "mean_self": df["rating_self"].mean(),
-        "mean_other": df["rating_other"].mean(),
-        "mean_self_other_diff": df["self_other_diff"].mean(),
-        "correlation_self_ground_truth": df["rating_self"].corr(df["ground_truth"]),
-        "correlation_other_ground_truth": df["rating_other"].corr(df["ground_truth"]),
-        "total_issues": len(df)
-    }
-    
-    return metrics
-
-
-def save_results(df: pd.DataFrame, metrics: Dict, output_dir: str = "."):
-    """
-    Save results to CSV and create visualization.
-    
-    Args:
-        df: DataFrame with experiment results
-        metrics: Dictionary with calculated metrics
-        output_dir: Directory to save outputs
-    """
-    # Save CSV
-    csv_path = f"{output_dir}/experiment_results.csv"
-    df.to_csv(csv_path, index=False)
-    print(f"Results saved to: {csv_path}")
-    
-    # Create visualization
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 10))
-    
-    # Rating distributions
-    ax1.hist(df["rating_self"], alpha=0.7, label="Self Rating", bins=10)
-    ax1.hist(df["rating_other"], alpha=0.7, label="Other Rating", bins=10)
-    ax1.set_xlabel("Rating")
-    ax1.set_ylabel("Frequency")
-    ax1.set_title("Rating Distributions")
-    ax1.legend()
-    
-    # Self vs Other scatter
-    ax2.scatter(df["rating_self"], df["rating_other"], alpha=0.7)
-    ax2.plot([0, 10], [0, 10], 'r--', alpha=0.5)
-    ax2.set_xlabel("Self Rating")
-    ax2.set_ylabel("Other Rating")
-    ax2.set_title("Self vs Other Ratings")
-    
-    # Self-Other difference
-    ax3.hist(df["self_other_diff"], bins=15, alpha=0.7)
-    ax3.axvline(0, color='red', linestyle='--', alpha=0.5)
-    ax3.set_xlabel("Self Rating - Other Rating")
-    ax3.set_ylabel("Frequency")
-    ax3.set_title("Self-Other Rating Difference")
-    
-    # Ground truth correlation
-    ax4.scatter(df["rating_self"], df["ground_truth"], alpha=0.7, label="Self")
-    ax4.scatter(df["rating_other"], df["ground_truth"], alpha=0.7, label="Other")
-    ax4.set_xlabel("Rating")
-    ax4.set_ylabel("Ground Truth")
-    ax4.set_title("Rating vs Ground Truth")
-    ax4.legend()
-    
-    plt.tight_layout()
-    
-    plot_path = f"{output_dir}/experiment_visualization.png"
-    plt.savefig(plot_path, dpi=300, bbox_inches='tight')
-    print(f"Visualization saved to: {plot_path}")
-    
-    # Print metrics
-    print("\n=== EXPERIMENT METRICS ===")
-    for key, value in metrics.items():
-        print(f"{key}: {value:.4f}")
+from pipeline.experiment import run_sequential_experiment, run_parallel_experiment, calculate_metrics
+from pipeline.dataset import create_experiment_dataset
+from pipeline.utils import save_results
 
 
 def main():
     """Main function to run the experiment."""
-    print("Starting self-sycophancy experiment...")
-    print("Note: Added delays to avoid rate limiting")
+    print("Starting self-sycophancy experiment with inspect_ai pipeline...")
+    
+    # Simple configuration
+    USE_PARALLEL = True  # Set to False for sequential processing
+    N_ISSUES = 20
+    RESULTS_DIR = "results"  # All outputs go to results folder
     
     try:
-        # Run experiment with delays to avoid rate limiting
-        results_df = run_experiment(n_issues=20)  # Set to 20 issues
+        if USE_PARALLEL:
+            print(f"Running parallel experiment with {N_ISSUES} issues...")
+            results_df = run_parallel_experiment(n_issues=N_ISSUES)
+        else:
+            print(f"Running sequential experiment with {N_ISSUES} issues...")
+            results_df = run_sequential_experiment(n_issues=N_ISSUES)
         
         # Calculate metrics
         metrics = calculate_metrics(results_df)
         
-        # Save results
-        save_results(results_df, metrics)
+        # Save basic results to results folder
+        save_results(results_df, metrics, RESULTS_DIR)
+        
+        # Create comprehensive datasets using inspect_ai framework
+        print("\nCreating comprehensive datasets...")
+        dataset_info = create_experiment_dataset(results_df.to_dict('records'), RESULTS_DIR)
         
         print("\nExperiment completed successfully!")
-        print("Total time with delays: ~4-6 minutes for 20 issues")
+        if USE_PARALLEL:
+            print(f"Parallel processing completed in ~30-60 seconds for {N_ISSUES} issues")
+        else:
+            print(f"Sequential processing completed in ~1-2 minutes for {N_ISSUES} issues")
+        print(f"Datasets available: {len(dataset_info)} formats")
+        print(f"All results saved to: {RESULTS_DIR}/ folder")
         
     except Exception as e:
         print(f"Error running experiment: {e}")
